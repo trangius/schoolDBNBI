@@ -1,8 +1,4 @@
-﻿using System.Data;
-using Microsoft.Data.SqlClient;
-using Dapper;
-
-namespace MySchoolProgram;
+﻿namespace MySchoolProgram;
 
 class Student
 {
@@ -14,35 +10,52 @@ class Student
 
 class Program
 {
+    static DatabaseRepository repo = new DatabaseRepository();
+
     static void Main()
     {
-        // anslut till databasen med hjälp av connection string
+        while(true)
+        {
+            Console.WriteLine("1. Print students");
+            Console.WriteLine("2. Add student");
+            Console.WriteLine("3. Exit");
+            Console.Write("Select: ");
+            string choice = Console.ReadLine();
+            switch(choice)
+            {
+                case "1":
+                    PrintStudents();
+                    break;
+                case "2":
+                    InsertStudent();
+                    break;
+                case "3":
+                    return;
+                default:
+                    Console.WriteLine("Invalid choice");
+                    break;
+            }
+        }
+    }
 
-        string connectionstring = File.ReadAllText("connectionstring.txt");
-        Console.WriteLine(connectionstring);
-
-        using IDbConnection connection = new SqlConnection(connectionstring);
-        // hämta ut alla studenter från databasen till en lista
-        IEnumerable<Student> students = connection.Query<Student>("SELECT * FROM Students");
-
+    static void PrintStudents()
+    {
+        IEnumerable<Student> students = repo.GetStudents();
         foreach(Student s in students)
         {
             Console.WriteLine($"Id: {s.Id} Name: {s.Name}, Email: {s.Email}, DateOfBirth: {s.DateOfBirth}");
         }
 
-        // Lägg till en ny student
+    }
+
+    static void InsertStudent()
+    {
         // Läsa in namn, email och dateofbirth från användaren
         Console.Write("Name: ");
         string name = CHelp.ReadString();
         Console.Write("Email: ");
         string email = CHelp.ReadString(); 
         Console.Write("Date of birth: ");
-        string dateOfBirth = Console.ReadLine();
-
-        // Spara i datbasen
-        string query = $"INSERT INTO Students (Name, Email, DateOfBirth) VALUES ('{name}', '{email}', '{dateOfBirth}')";
-        Console.WriteLine(query);
-        connection.Execute(query);
         DateTime dateOfBirth = CHelp.ReadDate();
         repo.InsertStudent(name, email, dateOfBirth);
     }
