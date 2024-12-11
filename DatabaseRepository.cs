@@ -23,4 +23,16 @@ class DatabaseRepository
         // anslut till databasen med hjälp av connection string
         connection.Execute(query);
     }
+    
+    public void UpdateStudent(int id, string name, string email, DateTime dateOfBirth)
+    {
+        // Spara i datbasen
+        string connectionstring = File.ReadAllText("connectionstring.txt");
+        using IDbConnection connection = new SqlConnection(connectionstring);
+        string query = $" UPDATE Students SET Name = '{name}', Email = '{email}', DateOfBirth = '{dateOfBirth}' WHERE Id = {id}"; 
+        
+        // Console.WriteLine(query);
+        // anslut till databasen med hjälp av connection string
+        connection.Execute(query);
+    }
 }

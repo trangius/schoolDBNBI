@@ -18,7 +18,8 @@ class Program
         {
             Console.WriteLine("1. Print students");
             Console.WriteLine("2. Add student");
-            Console.WriteLine("3. Exit");
+            Console.WriteLine("3. Update student");
+            Console.WriteLine("4. Exit");
             Console.Write("Select: ");
             string choice = Console.ReadLine();
             switch(choice)
@@ -30,6 +31,9 @@ class Program
                     InsertStudent();
                     break;
                 case "3":
+                    UpdateStudent();
+                    break;
+                case "4":
                     return;
                 default:
                     Console.WriteLine("Invalid choice");
@@ -58,5 +62,19 @@ class Program
         Console.Write("Date of birth: ");
         DateTime dateOfBirth = CHelp.ReadDate();
         repo.InsertStudent(name, email, dateOfBirth);
+    }
+    
+    static void UpdateStudent()
+    {
+        Console.Write("Ange id på den du vill uppdatera: ");
+        int id = CHelp.ReadInt();
+        // Läsa in namn, email och dateofbirth från användaren
+        Console.Write("Name: ");
+        string name = CHelp.ReadString();
+        Console.Write("Email: ");
+        string email = CHelp.ReadString(); 
+        Console.Write("Date of birth: ");
+        DateTime dateOfBirth = CHelp.ReadDate();
+        repo.UpdateStudent(id, name, email, dateOfBirth);
     }
 }
