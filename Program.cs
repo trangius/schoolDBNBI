@@ -33,9 +33,9 @@ class Program
         // Lägg till en ny student
         // Läsa in namn, email och dateofbirth från användaren
         Console.Write("Name: ");
-        string name = Console.ReadLine();
+        string name = CHelp.ReadString();
         Console.Write("Email: ");
-        string email = Console.ReadLine();
+        string email = CHelp.ReadString(); 
         Console.Write("Date of birth: ");
         string dateOfBirth = Console.ReadLine();
 
@@ -43,5 +43,7 @@ class Program
         string query = $"INSERT INTO Students (Name, Email, DateOfBirth) VALUES ('{name}', '{email}', '{dateOfBirth}')";
         Console.WriteLine(query);
         connection.Execute(query);
+        DateTime dateOfBirth = CHelp.ReadDate();
+        repo.InsertStudent(name, email, dateOfBirth);
     }
 }
